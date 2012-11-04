@@ -1,0 +1,21 @@
+{
+    "name": "yuyat/bulky",
+    "description": "Library to execute bulk insertion",
+    "keywords": ["db", "mysql", "bulk insert"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yuya Takeyama",
+            "email": "sign.of.the.wolf.pentagram@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0",
+        "edps/edps": ">=0.0.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "Yuyat": "src"
+        }
+    }
+}

@@ -30,14 +30,15 @@ class Yuyat_Bulky_DbAdapter_PdoMysqlAdapter
 
     public function execute($table, $columns, array $records)
     {
-        $query = $this->queryBuilder->build($table, $columns, $records);
+        $builder = $this->getQueryBuilder();
+        $query   = $builder->build($table, $columns, $records);
 
         $stmt = $this->pdo->prepare($query);
 
         return $stmt->execute($this->toValues($records));
     }
 
-    private getQueryBuilder()
+    private function getQueryBuilder()
     {
         if (is_null($this->queryBuilder)) {
             $this->queryBuilder = new Yuyat_Bulky_DbAdapter_PdoMysqlAdapter_QueryBuilder;
@@ -50,7 +51,7 @@ class Yuyat_Bulky_DbAdapter_PdoMysqlAdapter
     {
         $values = array();
 
-        foreach ($reocrds as $record) {
+        foreach ($records as $record) {
             $values = array_merge($values, $record);
         }
 

@@ -42,8 +42,8 @@ class Yuyat_Bulky_QueueFactory
 
         return new Yuyat_Bulky_Queue(
             $this->db,
-            $this->table,
-            $this->columns,
+            $table,
+            $columns,
             $recordsPerQuery
         );
     }

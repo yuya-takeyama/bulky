@@ -13,7 +13,7 @@
  *
  * @author Yuya Takeyama
  */
-class Yuyat_Bulky_Queue extends Edps_EventDispatcher
+class Yuyat_Bulky_Queue extends Edps_EventEmitter
 {
     /**
      * @var Yuyat_Bulky_DbAdapter_DbAdapterInterface

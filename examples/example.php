@@ -14,6 +14,6 @@ $queue->on('error', function ($records) {
     echo "Error!", PHP_EOL;
 });
 
-for ($i = 0; $i < 10000; $i++) {
+for ($i = 0; $i < 100000; $i++) {
     $queue->insert(array('Scott Wino Weinrich', '1960-09-29'));
 }

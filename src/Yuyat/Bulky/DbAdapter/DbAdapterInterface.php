@@ -15,5 +15,5 @@
  */
 interface Yuyat_Bulky_DbAdapter_DbAdapterInterface
 {
-    public function execute($table, $columns, array $records);
+    public function execute($table, $columns, array $records, array $options = array());
 }

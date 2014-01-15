@@ -28,14 +28,14 @@ class Yuyat_Bulky_DbAdapter_PdoMysqlAdapter
         $this->pdo = $pdo;
     }
 
-    public function execute($table, $columns, array $records)
+    public function execute($table, $columns, array $records, array $options = array())
     {
         $builder = $this->getQueryBuilder();
-        $query   = $builder->build($table, $columns, $records);
+        $query   = $builder->build($table, $columns, $records, $options);
 
         $stmt = $this->pdo->prepare($query);
 
-        return $stmt->execute($this->toValues($records));
+        return $stmt->execute($this->toValues($records, $options));
     }
 
     private function getQueryBuilder()
@@ -47,12 +47,18 @@ class Yuyat_Bulky_DbAdapter_PdoMysqlAdapter
         return $this->queryBuilder;
     }
 
-    private function toValues(array $records)
+    private function toValues(array $records, array $options = array())
     {
         $values = array();
 
         foreach ($records as $record) {
             $values = array_merge($values, $record);
+        }
+
+        if (isset($options['on_duplicate_key_update'])) {
+            foreach ($options['on_duplicate_key_update'] as $value) {
+                $values[] = $value;
+            }
         }
 
         return $values;

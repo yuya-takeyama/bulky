@@ -45,6 +45,11 @@ class Yuyat_Bulky_Queue extends Edps_EventEmitter
      */
     private $records;
 
+    /**
+     * @var array
+     */
+    private $options;
+
     public function __construct(
         Yuyat_Bulky_DbAdapter_DbAdapterInterface $db,
         $table,
@@ -60,13 +65,14 @@ class Yuyat_Bulky_Queue extends Edps_EventEmitter
         $this->records         = array();
     }
 
-    public function insert($record)
+    public function insert(array $record, array $options = array())
     {
         if (count($record) !== $this->columnSize) {
             throw new InvalidArgumentException('Size of columns is unmatched');
         }
 
         $this->records[] = $record;
+        $this->options   = $options;
 
         if (count($this->records) >= $this->recordsPerQuery) {
             $this->flush();
@@ -82,7 +88,8 @@ class Yuyat_Bulky_Queue extends Edps_EventEmitter
         $result = $this->db->execute(
             $this->table,
             $this->columns,
-            $this->records
+            $this->records,
+            $this->options
         );
 
         if ($result === false) {

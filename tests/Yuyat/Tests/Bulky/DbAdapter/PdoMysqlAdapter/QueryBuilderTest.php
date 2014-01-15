@@ -48,6 +48,29 @@ class Yuyat_Tests_Bulky_DbAdapter_PdoMysqlAdapter_QueryBuilderTest
         );
     }
 
+    /**
+     * @test
+     */
+    public function with_on_duplicate_key_update_option()
+    {
+        $builder = $this->createBuilder();
+        $query   = $builder->build('foo', array('bar', 'baz'), array(
+            array(1, 2),
+            array('foo', 'bar'),
+            array('hoge', 'fuga'),
+        ), array(
+            'on_duplicate_key_update' => array(
+                'abc' => 'def',
+                'ghi' => 'jkl',
+            )
+        ));
+
+        $this->assertEquals(
+            'INSERT INTO `foo` (`bar`, `baz`) VALUES (?, ?), (?, ?), (?, ?) ON DUPLICATE KEY UPDATE `abc` = ?, `ghi` = ?',
+            $query
+        );
+    }
+
     private function createBuilder()
     {
         return new Yuyat_Bulky_DbAdapter_PdoMysqlAdapter_QueryBuilder;

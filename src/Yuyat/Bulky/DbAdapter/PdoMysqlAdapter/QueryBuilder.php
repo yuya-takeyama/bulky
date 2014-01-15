@@ -15,11 +15,15 @@
  */
 class Yuyat_Bulky_DbAdapter_PdoMysqlAdapter_QueryBuilder
 {
-    public function build($table, array $columns, array $records)
+    public function build($table, array $columns, array $records, array $options = array())
     {
         $query = "INSERT INTO `{$table}` " .
             "{$this->toColumnList($columns)} VALUES ";
         $query .= $this->toValueLists($records);
+
+        if (isset($options['on_duplicate_key_update']) && count($options['on_duplicate_key_update']) > 0) {
+            $query .= ' ON DUPLICATE KEY UPDATE ' . $this->toUpdate(array_keys($options['on_duplicate_key_update']));
+        }
 
         return $query;
     }
@@ -52,5 +56,15 @@ class Yuyat_Bulky_DbAdapter_PdoMysqlAdapter_QueryBuilder
     private function toPlaceHolder()
     {
         return '?';
+    }
+
+    private function toUpdate($keys)
+    {
+        return join(', ', array_map(array($this, 'toUpdatePair'), $keys));
+    }
+
+    private function toUpdatePair($key)
+    {
+        return "`{$key}` = ?";
     }
 }
